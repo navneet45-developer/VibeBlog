@@ -25,7 +25,9 @@ export default function BlogDetail() {
   const fetchBlog = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${BASE_URL}/api/blogs/slug/${slug}`);
+      const res = await fetch(`${BASE_URL}/api/blogs/slug/${slug}`, {
+        credentials: 'include'
+      });
       if (!res.ok) throw new Error('Blog not found');
       const data = await res.json();
       setBlog(data);
@@ -40,7 +42,9 @@ export default function BlogDetail() {
 
   const fetchComments = async (blogId: string) => {
     try {
-      const res = await fetch(`${BASE_URL}/api/blogs/comments/${blogId}`);
+      const res = await fetch(`${BASE_URL}/api/blogs/comments/${blogId}`, {
+        credentials: 'include'
+      });
       const data = await res.json();
       setComments(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -52,7 +56,10 @@ export default function BlogDetail() {
     if (!user) return toast.error('Please login to like');
     try {
       setLiking(true);
-      await fetch(`${BASE_URL}/api/blogs/like/${blog._id}`, { method: 'POST' });
+      await fetch(`${BASE_URL}/api/blogs/like/${blog._id}`, {
+        method: 'POST',
+        credentials: 'include'
+      });
       fetchBlog();
     } catch (err) {
       toast.error('Error liking blog');
@@ -70,6 +77,7 @@ export default function BlogDetail() {
       const res = await fetch(`${BASE_URL}/api/blogs/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ content: newComment, blogId: blog._id })
       });
 
@@ -87,7 +95,10 @@ export default function BlogDetail() {
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this blog?')) {
       try {
-        const res = await fetch(`${BASE_URL}/api/blogs/${blog._id}`, { method: 'DELETE' });
+        const res = await fetch(`${BASE_URL}/api/blogs/${blog._id}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
         if (res.ok) {
           toast.success('Blog deleted');
           navigate('/');
