@@ -28,7 +28,7 @@ export default function CreateBlog({ isEdit = false }: { isEdit?: boolean }) {
 
   const fetchBlog = async () => {
     try {
-      const res = await fetch(`/api/blogs/slug/${id}`); // Assuming id is slug for simple lookup or we fix router
+      const res = await fetch(`https://vibeblog-backend.onrender.com/api/blogs${id}`); // Assuming id is slug for simple lookup or we fix router
       // Actually usually we'd pass ID for edit, but let's assume our API takes ID
       const data = await res.json();
       if (res.ok) {
