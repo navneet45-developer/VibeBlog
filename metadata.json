@@ -1,0 +1,6 @@
+{
+  "name": "VibeBlog",
+  "description": "A high-performance full-stack blog platform with JWT auth, MongoDB storage, and a polished responsive UI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["auth", "database", "storage"]
+}

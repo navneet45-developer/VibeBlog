@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply antialiased selection:bg-orange-200 dark:selection:bg-orange-800;
+  }
+
+  /* Markdown Typography Resets */
+  .prose h1 { @apply text-4xl font-extrabold mb-6 tracking-tighter; }
+  .prose h2 { @apply text-2xl font-bold mt-10 mb-4 tracking-tight; }
+  .prose h3 { @apply text-xl font-bold mt-8 mb-3; }
+  .prose p { @apply mb-6 leading-relaxed; }
+  .prose ul { @apply list-disc list-inside mb-6; }
+  .prose ol { @apply list-decimal list-inside mb-6; }
+  .prose blockquote { @apply border-l-4 border-orange-500 pl-4 italic my-8 text-neutral-600 dark:text-neutral-400; }
+  .prose code { @apply bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded text-sm font-mono; }
+  .prose pre { @apply bg-neutral-900 text-white p-6 rounded-2xl my-8 overflow-x-auto; }
+  .prose img { @apply rounded-3xl my-8; }
+  .prose a { @apply text-orange-600 font-bold hover:underline; }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/70 dark:bg-neutral-900/70 backdrop-blur-md;
+  }
+}
