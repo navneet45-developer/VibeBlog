@@ -15,11 +15,13 @@ async function startServer() {
   // Connect to Database
   await connectDB();
 
-  // Middleware
+  // 🔥 CORS FIX (IMPORTANT)
   app.use(cors({
-    origin: true,
+    origin: "https://vibeblog-frontend.onrender.com",
     credentials: true
   }));
+
+  // Middleware
   app.use(express.json());
   app.use(cookieParser());
   app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
@@ -30,7 +32,10 @@ async function startServer() {
 
   // Health check
   app.get('/api/health', (req, res) => {
-    res.json({ status: 'ok', database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected' });
+    res.json({
+      status: 'ok',
+      database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+    });
   });
 
   // Vite middleware for development
@@ -51,7 +56,10 @@ async function startServer() {
   // Error handling middleware
   app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error(err.stack);
-    res.status(500).json({ message: 'Something went wrong!', error: err.message });
+    res.status(500).json({
+      message: 'Something went wrong!',
+      error: err.message
+    });
   });
 
   app.listen(PORT, '0.0.0.0', () => {
