@@ -57,8 +57,9 @@ export default function BlogDetail() {
     try {
       setLiking(true);
       await fetch(`${BASE_URL}/api/blogs/like/${blog._id}`, {
-        method: 'POST',
-        credentials: 'include'
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' }, // 🔥 ADD
+  credentials: 'include'
       });
       fetchBlog();
     } catch (err) {

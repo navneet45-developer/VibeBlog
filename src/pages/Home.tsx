@@ -19,7 +19,10 @@ export default function Home() {
     try {
       setLoading(true);
       const url = `https://vibeblog-backend.onrender.com/api/blogs?category=${category}&search=${search}`;
-      const res = await fetch(url);
+      const res = await fetch(url,{
+        credentials: 'include'
+        
+      });
       const data = await res.json();
       setBlogs(data.blogs || []);
     } catch (err) {
