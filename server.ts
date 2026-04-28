@@ -3,19 +3,19 @@ import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import { createServer as createViteServer } from 'vite';
-import { connectDB } from './server/db.ts';
-import authRoutes from './server/routes/authRoutes.ts';
-import blogRoutes from './server/routes/blogRoutes.ts';
+
+import { connectDB } from './server/db';
+import authRoutes from './server/routes/authRoutes';
+import blogRoutes from './server/routes/blogRoutes';
 
 async function startServer() {
   const app = express();
   const PORT = Number(process.env.PORT) || 3000;
 
-  // Connect to Database
+  // DB connect
   await connectDB();
 
-  // 🔥 CORS FIX (IMPORTANT)
+  // 🔥 CORS (FINAL FIX)
   app.use(cors({
     origin: "https://vibeblog-frontend.onrender.com",
     credentials: true
@@ -26,11 +26,11 @@ async function startServer() {
   app.use(cookieParser());
   app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
-  // API Routes
+  // Routes
   app.use('/api/auth', authRoutes);
   app.use('/api/blogs', blogRoutes);
 
-  // Health check
+  // Health
   app.get('/api/health', (req, res) => {
     res.json({
       status: 'ok',
@@ -38,22 +38,14 @@ async function startServer() {
     });
   });
 
-  // Vite middleware for development
-  if (process.env.NODE_ENV !== 'production') {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  }
+  // ✅ ROOT (NO DIST, NO VITE)
+  app.get('/', (req, res) => {
+    res.send('API is running...');
+  });
 
-  // Error handling middleware
+  // ❌ REMOVE VITE + DIST COMPLETELY
+
+  // Error handler
   app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error(err.stack);
     res.status(500).json({
@@ -63,7 +55,7 @@ async function startServer() {
   });
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
   });
 }
 
